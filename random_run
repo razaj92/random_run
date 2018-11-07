@@ -1,0 +1,8 @@
+#!/bin/bash
+
+mindelay=$((${MIN_DELAY:-24}*60))  # we want the node for at least 24 hours
+additionaldelay=$((${ADDITIONAL_DELAY:-12}*60)) # allow 12 extra hours to cycle
+delay=$(($RANDOM%additionaldelay)) # pick an independent random delay within 12 hours
+(sleep $(((mindelay*60)+(delay*60))); ${CMD:-touch /var/run/reboot-required}) # wait, then run command
+
+#/usr/bin/nsenter -m/proc/1/ns/mnt -- touch /var/run/reboot-required
